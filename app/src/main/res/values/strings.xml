@@ -5,4 +5,8 @@
     <string name="documents">Documents</string>
     <string name="projects">Projets</string>
     <string name="catchline">Increase your productivity !</string>
+    <string name="add">Ajout d\'un fichier</string>
+    <string name="file">Fichier</string>
+    <string name="folder">Dossier</string>
+    <string name="create">Créer</string>
 </resources>

@@ -1,7 +1,6 @@
 package com.isn.jetlist;
 
 import android.os.Bundle;
-import android.preference.TwoStatePreference;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -28,21 +26,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_layout);
+        setContentView(R.layout.main);
+
+        // activation de la toolbar material design
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        ActionBar actionbar = getSupportActionBar();
-
-        /*
-            Quand aucun titre n'est spécifié, l'action bar prend le nom du l'app
-            On supprime donc le nom afin de mettre le hack en place plus tard
-         */
-        actionbar.setTitle("");
-
+        ActionBar actionBar = getSupportActionBar();
         // bouton menu à gauche le l'action bar
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_action_menu_jgreen);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_action_menu_jgreen);
 
         /*
             TextView qui se situe dans l'action bar.
@@ -57,16 +49,16 @@ public class MainActivity extends AppCompatActivity {
         TextView appTitle = toolbar.findViewById(R.id.toolbar_title);
         appTitle.setText(concat(titleJetPart, titleListPart));
 
-        // on commence par afficher la page projet
+        // on commence par afficher la page projet si l'application vient d'être lancée
+        if(savedInstanceState == null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        // manager de fragements
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        // on affiche le premier panneau projet
-        FragmentProjects fragmentProjects = new FragmentProjects();
-        fragmentTransaction.add(R.id.content_frame, fragmentProjects);
-        fragmentTransaction.commit();
+            // on affiche le premier panneau projet
+            ProjectsFragment projectsFragment = new ProjectsFragment();
+            fragmentTransaction.add(R.id.content_frame, projectsFragment);
+            fragmentTransaction.commit();
+        }
 
         // gestion du menu de navigation
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -87,14 +79,14 @@ public class MainActivity extends AppCompatActivity {
                 // ajoute le nouveau fragment
                 switch (item.getItemId()) {
                     case R.id.nav_projects:
-                        FragmentProjects fragmentProjects = new FragmentProjects();
-                        fragmentTransaction.replace(R.id.content_frame, fragmentProjects);
+                        ProjectsFragment projectsFragment = new ProjectsFragment();
+                        fragmentTransaction.replace(R.id.content_frame, projectsFragment);
                         fragmentTransaction.commit();
                         break;
 
                     case R.id.nav_docs:
-                        FragmentDocuments fragmentDocuments = new FragmentDocuments();
-                        fragmentTransaction.replace(R.id.content_frame, fragmentDocuments);
+                        DocumentsFragment documentsFragment = new DocumentsFragment();
+                        fragmentTransaction.replace(R.id.content_frame, documentsFragment);
                         fragmentTransaction.commit();
                         break;
                 }
@@ -109,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // création du menu de l'activité
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
