@@ -1,3 +1,6 @@
+# NOTE: DISCONTINUED A LONG TIME AGO
+We ended up doing it the old fashioned way with js and php
+
 # JetList
 Small school project. We're Java noobs so please ignore this !
 This will be a note app (some sort of cross-over between Google Keep and Trello)
